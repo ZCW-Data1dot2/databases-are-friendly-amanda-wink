@@ -27,9 +27,9 @@ from film_actor fa join actor a on fa.actor_id = a.actor_id
 group by fa.actor_id order by film_max desc limit 1;
 
 --7
-select f.title, i.store_id from inventory i
+select f.title, i.inventory_id, i.store_id from inventory i
 right join film f on i.film_id = f.film_id
-where f.title = 'Academy Dinosaur';
+where f.title = 'Academy Dinosaur' and i.store_id = 1;
 
 --8
 select * from customer where first_name = 'Mary' and last_name = 'Smith';
@@ -38,6 +38,8 @@ select staff_id, store_id from staff where first_name = 'Mike' and last_name = '
 insert into rental (customer_id, inventory_id, staff_id, rental_date) values (1, 1, 1, now());
 
 --9
+select rental_date, rental_date + interval (select rental_duration from film where film_id = 1) day
+as due_date from rental where rental_id = (select rental_id from rental order by rental_id desc limit 1);
 
 --10
 select avg(length) as average_run_time from film_list;
